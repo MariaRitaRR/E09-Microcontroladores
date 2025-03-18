@@ -1,10 +1,6 @@
-void setup() {
-  DDRD = 0b00001110;
-  DDRB = 0b00001110;
-
-}
-
-void loop() {
-  PORTB = PORTB | 0b00001110;
-
+int main(){
+  
+  DDRD = DDRD | 0b00000000;
+  DDRB = DDRB | 0b00100010;
+  
 }

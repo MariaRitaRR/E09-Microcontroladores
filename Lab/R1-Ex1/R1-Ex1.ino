@@ -1,34 +1,37 @@
+#include <avr/io.h>
+#include <util/delay.h>
+
+#define LED1 (1 << PD7)
+#define LED2 (1 << PD6)
+#define BOTAO1 (1 << PD5)
+#define BOTAO2 (1 << PD4)
+
 int main(void)
 {
-  DDRD = DDRD | 0b10000000; //Pino PD7 definido como saída
-  PORTD = PORTD | 0b00100000; // Habilitar PULL-UP no PD5
-  PORTD = PORTD & ~(0b10000000); //Desliga a saída PD7
+    // Configura LEDs como saída
+    DDRD |= (LED1 | LED2);
+    PORTD &= ~(LED1 | LED2); // Inicializa LEDs desligados
 
+    // Configura botões como entrada com pull-up ativado
+    DDRD &= ~(BOTAO1 | BOTAO2); // Configura pinos como entrada
+    PORTD |= (BOTAO1 | BOTAO2); // Ativa pull-ups internos
 
-  DDRD = DDRD | 0b01000000; //Pino PD6 definido como saída
-  PORTD = PORTD | 0b00010000; // Habilitar PULL-UP no PD4
-  PORTD = PORTD & ~(0b01000000); //Desliga a saída PD6
-
-
-  for (;;)//Super Lopp
-  {
-    int botao1 = PIND & 0b00100000; //Le o estado de PD5
-    int botao2 = PIND & 0b00010000; //Le o estado de PD4
-    
-    if (botao1 == 0)//Botão esta pressionado?
+    for (;;)
     {
-      PORTD = PORTD | 0b10000000; //PD7 -> High
-      _delay_ms(1000);
-      PORTD = PORTD & ~(0b10000000); ///PD7 -> LOW
-      
-      }
-    if (botao2 == 0)//Botão esta pressionado?
-    {
-      PORTD = PORTD | 0b01000000; //PD6 -> High
-      _delay_ms(1000);
-      PORTD = PORTD & ~(0b01000000); ///PD7 -> LOW
-      
-      }
-    
+        // Se BOTAO1 for pressionado, acende LED1 por 1 segundo
+        if (!(PIND & BOTAO1))
+        {
+            PORTD |= LED1;  // Acende LED1
+            _delay_ms(1000); // Mantém aceso por 1 segundo
+            PORTD &= ~LED1;  // Apaga LED1
+        }
+
+        // Se BOTAO2 for pressionado, acende LED2 por 1 segundo
+        if (!(PIND & BOTAO2))
+        {
+            PORTD |= LED2;  // Acende LED2
+            _delay_ms(1000); // Mantém aceso por 1 segundo
+            PORTD &= ~LED2;  // Apaga LED2
+        }
     }
 }
