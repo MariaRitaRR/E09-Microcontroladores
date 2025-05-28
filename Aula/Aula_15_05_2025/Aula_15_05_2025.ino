@@ -1,0 +1,12 @@
+
+int main()
+{
+  DDRD = 255;
+  TCCR0A |= (1<<COM0A1); // MODO NÃO INVERTIDO
+  TCCR0A |= (1<<WGM01)|(1<<WGM00); // PWM RAPIDO
+  TCCR0B |= (1<<WGM02);//PWM RAPIDO
+  TCCR0B |= (1<<CS01); //PRESCALER = 8
+  OCR0A =50; //DUTY-CYCLE (TENSAO NA SAIDA DO PINO)
+  while(1);
+
+}
